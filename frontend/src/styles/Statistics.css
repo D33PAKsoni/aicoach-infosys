@@ -1,0 +1,173 @@
+.statistics-page {
+    width: 100%;
+    
+    padding: 20px;
+    color: white;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.stats-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+    border-left: 4px solid #4ade80;
+    padding-left: 15px;
+}
+
+/* Sessions Grid */
+.sessions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.session-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.session-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+
+
+.session-meta {
+    margin: 10px 0;
+    font-size: 14px;
+    display: flex;
+    gap: 15px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 12px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #1a1a1a;
+    width: 80%;
+    max-width: 800px;
+    max-height: 85vh;
+    border-radius: 20px;
+    border: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 { margin: 0; color: #4ade80; }
+.modal-header p { margin: 5px 0 0; font-size: 12px; color: #777; }
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.modal-scroll-area {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Turn Detail Cards */
+.turn-detail-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.turn-number {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #4ade80;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.qna-section {
+    margin-bottom: 15px;
+}
+
+.turn-q { color: #fff; margin-bottom: 8px; line-height: 1.4; }
+.turn-a { color: #aaa; font-style: italic; font-size: 14px; }
+
+.turn-metrics-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-top: 1px solid #222;
+    padding-top: 10px;
+}
+
+.metric-tag {
+    background: #222;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #999;
+}
+
+.metric-tag span { color: #4ade80; font-weight: bold; }
+.metric-tag.filler span { color: #f87171; }
+
+.stats-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 10px;
+    color: #4ade80;
+}
+
+.spinning { animation: spin 2s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }

@@ -1,0 +1,290 @@
+.video-container{
+    position: sticky;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    overflow: hidden;
+    width: 100vw;
+    z-index:-1;
+}
+.webcam-feed{
+    position: absolute;
+    z-index: 1;
+    height: 100vh;
+    width: 100vw;
+    object-fit: cover;
+}
+
+.interview-dash-head{
+    position: absolute;
+    top: 10px;
+    margin-left: 1vw;
+    width:98vw;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 5px;
+}
+
+.timer{
+    margin-bottom: 10px;
+}
+
+.quit, .recording-video, .timer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: 1vw;
+    cursor: pointer;
+    width: 150px;
+    height: 70px;
+    background-color: rgba(0, 0, 0, 0.399);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    padding-left: 10px
+}
+
+.quit-dot{
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    border-radius: 50%;
+    padding: 13px;
+}
+
+.red-dot{
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.1; }
+  100% { opacity: 0.99; }
+}
+
+.transcription-windows{
+    position: absolute;
+    bottom: 10px;
+    left: 1vw;
+    width: 79vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.ai-interviewer{
+    display: flex;
+    gap: 5px;
+    color: rgb(255, 255, 255);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.user-response{
+    gap: 5px;
+    display: flex;
+    color: rgb(255, 255, 255);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.name-label{
+    width: 12vw;
+    min-height: 50px;
+    background-color: rgba(0, 0, 0, 0.399);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.response{
+    width: 67vw;
+    min-height: 50px;
+    background-color: rgba(0, 0, 0, 0.399);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.answer-metrics{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding-left: 30px;
+    color: white;
+    gap: 2px;
+    font-weight: bolder;
+    bottom: 10px;
+    right: 1vw;
+    width: 18.5vw;
+    min-height: 110px;
+    background-color: rgba(0, 0, 0, 0.399);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 40px;
+}
+
+.ai-window{
+    position: absolute;
+    top: 100px;
+    left: 1vw;
+    width: 13vw;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.399);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.ai-coach-label{
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.ai-window p{
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+
+.spinner{
+    animation: spin 1s linear infinite;
+    width: 30px;
+    height: 30px;
+    
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.metrics-panel{
+    position: absolute;
+    bottom: 130px;
+    right: 1vw;
+    width: 18.5vw;
+    min-height: 50vh;
+    background-color: rgba(0, 0, 0, 0.399);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+    border-radius: 50px;
+}
+
+.metrics-grid{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 40px;
+}
+
+.metric-card{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.metric-name{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.metric-value{
+    margin-top: 5px;
+    font-size: 16px;
+    color: white;
+}
+
+
+/* Security Warning Styles */
+.security-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it stays on top of everything */
+}
+
+.security-popup {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    border-radius: 25px;
+    padding: 50px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0 30px rgba(248, 113, 113, 0.1);
+}
+
+.security-popup h2 {
+    color: #f87171;
+    font-size: 32px;
+    margin: 20px 0 10px;
+}
+
+.security-popup p {
+    color: #ccc;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+.return-btn {
+    background: #4ade80;
+    color: black;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.return-btn:hover {
+    background: #22c55e;
+    transform: scale(1.05);
+}
