@@ -31,6 +31,9 @@ node_modules/
 __pycache__/
 .env
 .venv/
+venv/
+ENV/
+env/
 
 # ML Data (Ignore large datasets, keep the code)
 ml/data/
