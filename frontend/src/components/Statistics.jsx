@@ -13,11 +13,9 @@ const Statistics = () => {
     const [detailsLoading, setDetailsLoading] = useState(false);
     const { user } = useContext(AuthContext);
 
-    // 1. Fetch all past sessions for the user
     useEffect(() => {
         const fetchSessions = async () => {
             try {
-                // user_id is hardcoded to 1 as per your current handleQuit logic
                 const response = await axios.get(`http://localhost:8000/get-sessions?user_id=${user.id}`);
                 setSessions(response.data);
             } catch (err) {
@@ -29,7 +27,6 @@ const Statistics = () => {
         fetchSessions();
     }, []);
 
-    // 2. Fetch details (turns) for a specific session
     const handleSessionClick = async (session) => {
         setDetailsLoading(true);
         try {
@@ -71,14 +68,12 @@ const Statistics = () => {
                 )}
             </div>
 
-            {/* Detailed Session Modal */}
             {selectedSession && (
                 <div className="modal-overlay" onClick={() => setSelectedSession(null)}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <div>
                                 <h3>Session Details</h3>
-                                {/* <p>{selectedSession.session_uuid}</p> */}
                             </div>
                             <button className="close-btn" onClick={() => setSelectedSession(null)}><X /></button>
                         </div>

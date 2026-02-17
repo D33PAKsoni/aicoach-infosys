@@ -6,24 +6,6 @@ export const Landing = () => {
 
   
 
-  // const videoRef = useRef(null);
-
-  // useEffect(() => {
-  //   const video = videoRef.current;
-
-  //   const handleEnded = () => {
-  //     // Pause at the last frame
-  //     video.pause();
-  //     video.currentTime = video.duration;
-  //   };
-
-  //   video.addEventListener("ended", handleEnded);
-
-  //   return () => {
-  //     video.removeEventListener("ended", handleEnded);
-  //   };
-  // }, []);
-
 
   return (
     <div>

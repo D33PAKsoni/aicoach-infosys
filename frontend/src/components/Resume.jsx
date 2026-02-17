@@ -41,7 +41,6 @@ const Resume = () => {
             <h2 className="match-title">Resume JD Matcher</h2>
             
             <div className="match-grid">
-                {/* Upload Section */}
                 <form className="upload-container" onSubmit={handleAnalyze}>
                     <div className="upload-card">
                         <div className="card-label"><FileText size={18} /> Resume</div>
@@ -74,7 +73,6 @@ const Resume = () => {
                     {error && <p className="error-msg"><AlertCircle size={14} /> {error}</p>}
                 </form>
 
-                {/* Results Section */}
                 <div className="result-display">
                     {!result ? (
                         <div className="score-card placeholder">

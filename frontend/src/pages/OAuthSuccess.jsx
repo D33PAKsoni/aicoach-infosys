@@ -12,11 +12,10 @@ export default function OAuthSuccess(){
 
    if(token){
      localStorage.setItem("token", token);
-     navigate("/dashboard"); // or dashboard
+     navigate("/dashboard"); 
    }
 
-   navigate("/login"); // or dashboard
-
+   navigate("/login"); 
  },[]);
 
  return <div>Logging you in...</div>;

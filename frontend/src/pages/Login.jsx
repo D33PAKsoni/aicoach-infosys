@@ -27,8 +27,6 @@ export default function Login() {
     });
     navigate("/dashboard");
 
-    // window.location.href = "/"; 
-
 
   } catch(err) {
 
@@ -38,25 +36,6 @@ export default function Login() {
 };
 
 
-  // const handleLogin = async () => {
-
-  //   try {
-
-  //     const res = await API.post("/auth/login", {
-  //       email,
-  //       password
-  //     });
-
-  //     localStorage.setItem("token", res.data.access_token);
-
-  //     alert("Login successful");
-
-  //   } catch(err) {
-
-  //     alert("Login failed");
-
-  //   }
-  // };
 
   return (
     <div className="auth">

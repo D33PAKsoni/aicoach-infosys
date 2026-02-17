@@ -70,16 +70,13 @@ const [showWarning, setShowWarning] = useState(false);
     };
 
     const handleMouseLeave = (e) => {
-        // Triggers when mouse leaves the document boundaries
         if (e.clientY <= 0 || e.clientX <= 0 || (e.clientX >= window.innerWidth) || (e.clientY >= window.innerHeight)) {
             setShowWarning(true);
         }
     };
 
-    // Listen for tab switching or clicking outside the window
     window.addEventListener('blur', handleFocusLoss);
     
-    // Listen for mouse moving outside the browser viewport
     document.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
@@ -124,7 +121,6 @@ const [showWarning, setShowWarning] = useState(false);
         setMetrics(data);
 
         if (isListeningRef.current && data.faceDetected) {
-        // setBehaviorLog(prev => [...prev, data.behaviorMetric]);
         behaviorLogRef.current.push(data.behaviorMetric);
       }
       };
@@ -160,7 +156,7 @@ const [showWarning, setShowWarning] = useState(false);
         
           wsRef.current.send(base64);
         }
-      }, 300); // 3 FPS (optimal)
+      }, 300); 
 
       return () => clearInterval(interval);
   }, []);
@@ -227,27 +223,6 @@ const [showWarning, setShowWarning] = useState(false);
 
 
 
-  // useEffect(() => {
-  //   if (!wsRef.current) return;
-    
-  //   const originalOnMessage = wsRef.current.onmessage;
-  //   wsRef.current.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     setMetrics(data);
-      
-  //     // 3. Maintain an array of behavior while person is responding
-  //     if (isListening && data.faceDetected) {
-  //       setBehaviorLog(prev => [...prev, data.behaviorMetric]);
-  //     }
-  //   };
-  // }, [isListening]);
-
-  // const calculateMostCommon = (arr) => {
-  //   if (arr.length === 0) return "N/A";
-  //   return arr.sort((a,b) =>
-  //         arr.filter(v => v===a).length - arr.filter(v => v===b).length
-  //   ).pop();
-  // };
 
 
   const calculateMostCommon = (arr) => {
@@ -266,76 +241,25 @@ const [showWarning, setShowWarning] = useState(false);
   };
 
 
-
-  // const processTurn = async (blob) => {
-  //   setLoading(true);
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("audio", blob);
-  //     const transRes = await axios.post("http://localhost:8000/transcribe", formData);
-  //     const { transcript, duration } = transRes.data;
-  //     // const userText = transRes.data.transcript;
-  //     // setTranscript(userText);
-
-  //     const wordCount = transcript.trim().split(/\s+/).length;
-  //     const wpm = duration > 0 ? Math.round((wordCount / duration) * 60) : 0;
-
-  //     const chatData = new FormData();
-  //     chatData.append("transcript", transcript);
-  //     chatData.append("session_id", sessionIdRef.current); 
-  //     const chatRes = await axios.post("http://localhost:8000/generate-question", chatData);
-
-
-  //     const topBehavior = calculateMostCommon(behaviorLog);
-
-
-  //     setLastMetrics({
-  //       wpm,
-  //       accuracy: chatRes.data.accuracy,
-  //       fillers: chatRes.data.filler_words.join(", "),
-  //       commonBehavior: topBehavior
-  //     });
-
-
-  //     setTranscript(transcript);
-  //     setAiResponse(chatRes.data.question);
-  //     setBehaviorLog([]); // Reset log for next question
-  //     speakAndListen(chatRes.data.question);
-      
-  //     // const nextQ = chatRes.data.question;
-  //     // setAiResponse(nextQ);
-  //     // speakAndListen(nextQ);
-  //   } catch (err) {
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const processTurn = async (blob) => {
     setLoading(true);
     try {
-      // 1. Transcribe the audio and get duration for WPM
       const formData = new FormData();
       formData.append("audio", blob);
       const transRes = await axios.post("http://localhost:8000/transcribe", formData);
       const { transcript, duration } = transRes.data;
 
-      // 2. Calculate Words Per Minute (WPM)
       const wordCount = transcript.trim().split(/\s+/).filter(word => word.length > 0).length;
       const wpm = duration > 0 ? Math.round((wordCount / duration) * 60) : 0;
 
-      // 3. Get AI analysis and the next question from Gemini
       const chatData = new FormData();
       chatData.append("transcript", transcript);
       chatData.append("session_id", sessionIdRef.current); 
       const chatRes = await axios.post("http://localhost:8000/generate-question", chatData);
 
-      // 4. Determine the dominant behavior during this specific answer
-      // const topBehavior = calculateMostCommon(behaviorLog);
+
       const topBehavior = calculateMostCommon(behaviorLogRef.current);
 
-      // 5. Construct the Turn Object
       const turnResult = {
         question: currentQuestionRef.current,
         answer: transcript,
@@ -345,20 +269,12 @@ const [showWarning, setShowWarning] = useState(false);
         commonBehavior: topBehavior
       };
 
-      // 6. Update the cumulative history for the final database save
-      // Ensure interviewHistory is defined as: const interviewHistory = useRef([]);
+
       interviewHistory.current.push(turnResult);
 
-      // 7. Update UI states
       setLastMetrics(turnResult);
       setTranscript(transcript);
-      // setAiResponse(chatRes.data.question);
       
-      // // 8. Reset behavior log for the next question cycle
-      // setBehaviorLog([]); 
-      
-      // // 9. Trigger AI Speech for the next question
-      // speakAndListen(chatRes.data.question);
 
 
       const nextQuestion = chatRes.data.question;
@@ -426,7 +342,7 @@ const [showWarning, setShowWarning] = useState(false);
       try {
         await axios.post("http://localhost:8000/save-session", {
           session_id: sessionIdRef.current,
-          user_id: userId, // Replace with actual logged-in user ID from context
+          user_id: userId, 
           turns: interviewHistory.current
         });
         navigate('/dashboard');

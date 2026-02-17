@@ -10,11 +10,9 @@ const InterviewInstructions = () => {
     const navigate = useNavigate();
     const location = useLocation();
     
-    // Retrieve passed data (Resume, JD, and Score)
     const { resume, jd, score } = location.state || {};
 
     const handleStartInterview = () => {
-        // Function to enter Fullscreen mode
         const elem = document.documentElement;
         if (elem.requestFullscreen) {
             elem.requestFullscreen().catch(err => {
@@ -22,7 +20,6 @@ const InterviewInstructions = () => {
             });
         }
 
-        // Navigate to the interview page
         navigate('/interview', { state: { resume, jd, score } });
     };
 
@@ -39,9 +36,7 @@ const InterviewInstructions = () => {
                 </video>
             </div>
             <div className="instructions-overlay">
-                {/* <button className="back-btn" onClick={() => navigate(-1)}>
-                    <ArrowLeft size={20} /> Back to Matcher
-                </button> */}
+   
 
                 <div className="instructions-card">
                     <div className="header-section">

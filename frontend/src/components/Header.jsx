@@ -101,7 +101,7 @@ if(user){
           </ul>
         </nav>
 
-        {/* Pill 3: Auth/Login */}
+      
         <div className="nav-pill auth-pill">
          <a href='/login'> <p className="login-button">Login</p></a>
          {/* <img src='../assets/social.png' alt='' className='login-img'></img> */}
@@ -111,5 +111,3 @@ if(user){
     </div>
   );
 };
-
-// export default Header;
