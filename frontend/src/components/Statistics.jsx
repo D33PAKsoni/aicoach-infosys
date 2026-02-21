@@ -13,10 +13,12 @@ const Statistics = () => {
     const [detailsLoading, setDetailsLoading] = useState(false);
     const { user } = useContext(AuthContext);
 
+    const userID = user?.id;
+
     useEffect(() => {
         const fetchSessions = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-sessions?user_id=${user.id}`);
+                const response = await axios.get(`http://localhost:8000/get-sessions?user_id=${userID}`);
                 setSessions(response.data);
             } catch (err) {
                 console.error("Error fetching sessions:", err);

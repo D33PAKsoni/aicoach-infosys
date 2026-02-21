@@ -2,16 +2,14 @@ import React from 'react'
 import '../styles/header.css'
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
 
 
 
 const { user } = useContext(AuthContext);
-
-if(user){
-   console.log("Logged in as", user.email);
-}
+const navigate = useNavigate();
 
 
 
@@ -100,12 +98,14 @@ if(user){
             </li>
           </ul>
         </nav>
-
-      
-        <div className="nav-pill auth-pill">
-         <a href='/login'> <p className="login-button">Login</p></a>
+        { user ? (
+          <div className="nav-pill auth-pill" onClick={()=> navigate('/dashboard')}>
+            <a href="/dashboard"><p className="login-button">Dashboard</p></a>
+        </div>) : (
+        <div className="nav-pill auth-pill" onClick={()=> navigate('/login')}>
+         <a href="/login"><p className="login-button">Login</p></a>
          {/* <img src='../assets/social.png' alt='' className='login-img'></img> */}
-        </div>
+        </div>)}
         <div className="page-blur-overlay"></div>
       </header>
     </div>

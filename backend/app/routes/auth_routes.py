@@ -1,14 +1,9 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, HTTPException
 from sqlalchemy.orm import Session
 from ..database import SessionLocal
 from .. import models, schemas, auth
 from ..oauth import oauth
-
-from fastapi.responses import RedirectResponse
-from fastapi.responses import JSONResponse
-
-
-from fastapi import Request, HTTPException
+from fastapi.responses import RedirectResponse, JSONResponse
 from jose import jwt, JWTError
 from ..core.config import settings
 
@@ -41,7 +36,21 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
 
-    return {"message": "User registered"}
+    # return {"message": "User registered"}
+    token = auth.create_token({"sub": new_user.email})
+
+    response = JSONResponse({"message": "User registered"})
+
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        secure=False,
+        samesite="lax",
+        path="/"
+    )
+
+    return response
 
 
 @router.post("/login")
@@ -127,15 +136,23 @@ def get_current_user(request: Request):
     except JWTError:
         return None
 
+
+
 @router.get("/me")
-def get_me(request: Request):
+def get_me(request: Request, db: Session = Depends(get_db)):
 
     user_email = get_current_user(request)
 
     if not user_email:
         raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    db_user = db.query(models.User).filter(models.User.email == user_email).first()
+    
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
 
     return {
+        "id": db_user.id,
         "email": user_email
     }
 

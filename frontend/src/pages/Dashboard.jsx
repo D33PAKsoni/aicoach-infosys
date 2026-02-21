@@ -30,14 +30,14 @@ const Dashboard = () => {
       </div>
       <div className="dashboard-overlay">
         <div className="quick-menu">
-          <div className={`menu-div ${selected === "profile" ? "selected" : ""}`} onClick={() => setSelected("profile")}>
+          {/* <div className={`menu-div ${selected === "profile" ? "selected" : ""}`} onClick={() => setSelected("profile")}>
             <User size={32} color="black" />
             <p>User</p>
           </div>
           <div className={`menu-div ${selected === "records" ? "selected" : ""}`} onClick={() => setSelected("records")}>
             <History size={32} color="black" />
             <p>Records</p>
-          </div>
+          </div> */}
           <div className={`menu-div ${selected === "resume" ? "selected" : ""}`} onClick={() => setSelected("resume")}>
             <FileText size={32} color="black" />
             <p>Resume Match</p>

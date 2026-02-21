@@ -22,7 +22,7 @@ export default function Register() {
       });
 
       navigate("/dashboard");
-      alert("Registration successful");
+      // alert("Registration successful");
 
     } catch(err) {
 
