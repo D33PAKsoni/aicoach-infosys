@@ -8,8 +8,6 @@ authlib
 python-dotenv
 pydantic[email]
 httpx
-
-
 torch 
 numpy 
 pypdf 
@@ -23,3 +21,7 @@ scikit-learn
 opencv-python 
 pillow 
 torchvision
+python-multipart  
+pydantic-settings 
+google-genai  
+pydub 
