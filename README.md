@@ -49,7 +49,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 git clone https://github.com/D33PAKsoni/aicoach-infosys.git
-cd ai-interview-coach
+cd aicoach-infosys
 
 ```
 
