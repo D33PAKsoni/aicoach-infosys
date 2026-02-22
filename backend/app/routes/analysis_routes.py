@@ -1,117 +1,3 @@
-# import os
-# import io
-# import uuid
-# import json
-# import re
-# import numpy as np
-# import whisper
-# import pypdf
-# import docx
-# from fastapi import APIRouter, File, UploadFile, Form, HTTPException
-# from fastapi.responses import FileResponse
-# from sentence_transformers import SentenceTransformer
-# from sklearn.metrics.pairwise import cosine_similarity
-# from pydub import AudioSegment
-# import speech_recognition as sr
-# from gtts import gTTS
-# import pyttsx3
-# from google import genai
-# from google.genai import types
-
-# from ..core.config import settings
-
-# router = APIRouter()
-
-# nlp_model = SentenceTransformer('all-mpnet-base-v2', device="cpu")
-# whisper_model = whisper.load_model("base")
-# client = genai.Client(api_key=settings.GEMINI_API_KEY)
-
-# MODEL_ID = "gemini-2.5-flash" 
-# chat_sessions = {}
-# AUDIO_DIR = "temp_audio"
-# os.makedirs(AUDIO_DIR, exist_ok=True)
-
-# # Helper functions
-# def get_embedding(text):
-#     words = text.split()
-#     chunk_size = 300
-#     chunks = [' '.join(words[i:i + chunk_size]) for i in range(0, len(words), chunk_size)]
-#     if not chunks: return np.zeros(768)
-#     chunk_embeddings = nlp_model.encode(chunks)
-#     return np.mean(chunk_embeddings, axis=0)
-
-# async def extract_text_from_file(file: UploadFile):
-#     content = await file.read()
-#     if file.filename.endswith(".pdf"):
-#         pdf_reader = pypdf.PdfReader(io.BytesIO(content))
-#         return "".join([page.extract_text() or "" for page in pdf_reader.pages])
-#     elif file.filename.endswith(".docx"):
-#         doc = docx.Document(io.BytesIO(content))
-#         return "\n".join([para.text for para in doc.paragraphs])
-#     elif file.filename.endswith(".txt"):
-#         return content.decode("utf-8")
-#     return ""
-
-# def extract_json(text):
-#     match = re.search(r'\{.*\}', text, re.DOTALL)
-#     return match.group(0) if match else text
-
-# # Routes
-# @router.post("/analyze")
-# async def analyze_match(resume: UploadFile = File(...), jd_file: UploadFile = File(None), jd_text: str = Form(None)):
-#     if not jd_file and not jd_text:
-#         raise HTTPException(status_code=400, detail="Provide JD file or text.")
-    
-#     resume_content = await extract_text_from_file(resume)
-#     jd_content = await extract_text_from_file(jd_file) if jd_file else jd_text
-
-#     if not resume_content.strip() or not jd_content.strip():
-#         raise HTTPException(status_code=400, detail="Extraction failed.")
-
-#     r_emb = get_embedding(resume_content)
-#     j_emb = get_embedding(jd_content)
-#     score = cosine_similarity([r_emb], [j_emb])[0][0]
-    
-#     return {"match_percentage": round(float(score) * 100, 2), "status": "Success"}
-
-# @router.post("/transcribe")
-# def transcribe_audio(audio: UploadFile = File(...)):
-#     file_id = str(uuid.uuid4())
-#     temp_path = os.path.join(AUDIO_DIR, f"{file_id}_raw")
-#     pcm_path = os.path.join(AUDIO_DIR, f"{file_id}_fixed.wav")
-    
-#     with open(temp_path, "wb") as f:
-#         f.write(audio.file.read())
-
-#     try:
-#         audio_segment = AudioSegment.from_file(temp_path)
-#         duration = audio_segment.duration_seconds
-#         audio_segment.export(pcm_path, format="wav")
-        
-#         try:
-#             r = sr.Recognizer()
-#             with sr.AudioFile(pcm_path) as source:
-#                 audio_data = r.record(source)
-#                 transcript = r.recognize_google(audio_data)
-#         except:
-#             result = whisper_model.transcribe(pcm_path)
-#             transcript = result['text']
-
-#         return {"transcript": transcript, "duration": duration}
-#     except Exception as e:
-#         return {"transcript": "", "duration": 0}
-#     finally:
-#         for path in [temp_path, pcm_path]:
-#             if os.path.exists(path): os.remove(path)
-
-
-
-
-
-
-
-
-
 import os
 import io
 import uuid
@@ -121,7 +7,7 @@ import numpy as np
 import whisper
 import pypdf
 import docx
-import anyio # Added for thread offloading
+import anyio 
 from fastapi import APIRouter, File, UploadFile, Form, HTTPException
 from fastapi.responses import FileResponse
 from sentence_transformers import SentenceTransformer
@@ -137,7 +23,6 @@ from ..core.config import settings
 
 router = APIRouter()
 
-# Models loaded once at module level to avoid repeated initialization
 nlp_model = SentenceTransformer('all-mpnet-base-v2', device="cpu")
 whisper_model = whisper.load_model("base")
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
@@ -147,7 +32,6 @@ chat_sessions = {}
 AUDIO_DIR = "temp_audio"
 os.makedirs(AUDIO_DIR, exist_ok=True)
 
-# Helper functions
 def get_embedding(text):
     words = text.split()
     chunk_size = 300
@@ -172,7 +56,6 @@ def extract_json(text):
     match = re.search(r'\{.*\}', text, re.DOTALL)
     return match.group(0) if match else text
 
-# Routes
 @router.post("/analyze")
 async def analyze_match(resume: UploadFile = File(...), jd_file: UploadFile = File(None), jd_text: str = Form(None)):
     if not jd_file and not jd_text:
@@ -184,7 +67,6 @@ async def analyze_match(resume: UploadFile = File(...), jd_file: UploadFile = Fi
     if not resume_content.strip() or not jd_content.strip():
         raise HTTPException(status_code=400, detail="Extraction failed.")
 
-    # Offload CPU-intensive embedding generation to threads
     r_emb = await anyio.to_thread.run_sync(get_embedding, resume_content)
     j_emb = await anyio.to_thread.run_sync(get_embedding, jd_content)
     
@@ -194,7 +76,6 @@ async def analyze_match(resume: UploadFile = File(...), jd_file: UploadFile = Fi
 
 @router.post("/transcribe")
 def transcribe_audio(audio: UploadFile = File(...)):
-    # Standard 'def' runs in FastAPI's external thread pool automatically
     file_id = str(uuid.uuid4())
     temp_path = os.path.join(AUDIO_DIR, f"{file_id}_raw")
     pcm_path = os.path.join(AUDIO_DIR, f"{file_id}_fixed.wav")
