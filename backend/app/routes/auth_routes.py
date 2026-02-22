@@ -36,7 +36,6 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
 
-    # return {"message": "User registered"}
     token = auth.create_token({"sub": new_user.email})
 
     response = JSONResponse({"message": "User registered"})
