@@ -1,6 +1,6 @@
 # InterviewMinutes : AI Powered Interview Coach
 
-AI Interview Coach is a full-stack application designed to help candidates prepare for technical interviews. It leverages AI for resume matching, real-time question generation, speech-to-text transcription, and computer vision to analyze interviewee behavior and emotions.
+AI Interview Coach is a full-stack application designed to help candidates prepare for technical interviews. It uses cosine similarity for resume matching, real-time question generation, speech-to-text transcription, and computer vision to analyze interviewee behavior and emotions.
 
 ## Features
 
@@ -53,22 +53,74 @@ cd aicoach-infosys
 
 ```
 
-### 2. Backend Setup
 
-1. Navigate to the backend directory:
+### 2. Database Setup
+
+1. Create a database in MySQL WorkBench 8:
+
+```bash
+CREATE DATABASE aicoach_db;
+
+```
+
+
+2. Create a tables in MySQL WorkBench 8:
+
+```bash
+CREATE TABLE aicoach_db.users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    email VARCHAR(255) UNIQUE NOT NULL,
+	google_id VARCHAR(255) UNIQUE,
+	password_hash VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE aicoach_db.interview_sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    session_uuid VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_user 
+        FOREIGN KEY (user_id) 
+        REFERENCES users(id) 
+        ON DELETE CASCADE
+);
+
+CREATE TABLE aicoach_db.interview_turns (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    session_id INT NOT NULL,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    wpm INT,
+    accuracy FLOAT,
+    fillers VARCHAR(255),
+    dominant_behavior VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_session 
+        FOREIGN KEY (session_id) 
+        REFERENCES interview_sessions(id) 
+        ON DELETE CASCADE
+);
+```
+
+
+
+### 3. Backend Setup
+
+1. Create a virtual environment:
+```bash
+python -m venv venv  
+# On Windows: 
+venv\Scripts\activate
+
+```
+
+2. Navigate to the backend directory:
 ```bash
 cd backend
 
 ```
-
-
-2. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-```
-
 
 3. Install dependencies:
 ```bash
@@ -82,17 +134,21 @@ pip install -r requirements.txt
 MYSQL_USER=your_user
 MYSQL_PASSWORD=your_password
 MYSQL_HOST=localhost
-MYSQL_DB=interview_coach_db
+MYSQL_DB=aicoach_db
 SECRET_KEY=your_super_secret_jwt_key
 GEMINI_API_KEY=your_google_gemini_api_key
+
+# OPTIONAL (Only for Google Login)
+
 GOOGLE_CLIENT_ID=optional_for_oauth
 GOOGLE_CLIENT_SECRET=optional_for_oauth
 
 ```
 
+Aquire a GEMINI API key. And set the MYSQL_USER, MYSQL_PASSWORD and SUPER_KEY according to your setup.
+Setting GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET is optional and only required for OAuth SSO login implementation.
 
-
-### 3. Frontend Setup
+### 4. Frontend Setup
 
 1. Navigate to the frontend directory:
 ```bash
@@ -119,7 +175,7 @@ npm install
 From the `backend` directory:
 
 ```bash
-python main.py
+uvicorn main:app
 
 ```
 
