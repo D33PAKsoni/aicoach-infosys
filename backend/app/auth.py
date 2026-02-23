@@ -7,18 +7,15 @@ from .core.config import settings
 ALGORITHM = "HS256"
 
 def normalize_password(password: str):
-    """Keep this the same to match existing database hashes."""
     return hashlib.sha256(password.encode()).hexdigest()
 
-def hash_password(password: str):
-    """Hashes the password using bcrypt directly."""
+def hash_password(password: str)
     password_bytes = normalize_password(password).encode('utf-8')
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(password_bytes, salt)
     return hashed.decode('utf-8')
 
 def verify_password(plain: str, hashed: str):
-    """Verifies a plain password against a hashed version."""
     password_bytes = normalize_password(plain).encode('utf-8')
     hashed_bytes = hashed.encode('utf-8')
     try:
