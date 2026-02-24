@@ -3,6 +3,7 @@ import API from "../api";
 import AuthInput from "../components/AuthInput";
 import "../styles/auth.css";
 import { useNavigate } from "react-router-dom";
+import { Header } from "../components/Header";
 
 
 export default function Register() {
@@ -32,7 +33,8 @@ export default function Register() {
   };
 
   return (
-        <div className="auth">
+    <div className="auth">
+      <Header></Header>
       <div className="video-background">
         <video
           autoPlay
