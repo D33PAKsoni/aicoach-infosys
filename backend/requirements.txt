@@ -25,3 +25,5 @@ python-multipart
 pydantic-settings 
 google-genai  
 pydub 
+itsdangerous
+mediapipe
