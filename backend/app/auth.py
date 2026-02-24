@@ -9,7 +9,7 @@ ALGORITHM = "HS256"
 def normalize_password(password: str):
     return hashlib.sha256(password.encode()).hexdigest()
 
-def hash_password(password: str)
+def hash_password(password: str):
     password_bytes = normalize_password(password).encode('utf-8')
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(password_bytes, salt)
