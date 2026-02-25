@@ -13,7 +13,7 @@ import {
   Twitter, 
   Linkedin 
 } from 'lucide-react'
-import '../styles/landing.css'
+import '../styles/Landing.css'
 
 export const Landing = () => {
 
