@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/header.css'
+import '../styles/Header.css'
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import API from "../api";
