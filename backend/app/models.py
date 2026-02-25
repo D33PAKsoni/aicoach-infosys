@@ -10,6 +10,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255))
     password_hash = Column(String(255))
+    full_name = Column(String(100), nullable=False)
     google_id = Column(String(255))
     created_at = Column(TIMESTAMP, default=datetime.now(timezone.utc))
     

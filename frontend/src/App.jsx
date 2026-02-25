@@ -23,7 +23,7 @@ export const App = () => {
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/oauth-success" element={<OAuthSuccess/>}/>
-            <Route path="/dashboard"element={<Dashboard />}/>
+            <Route path="/dashboard"element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
             <Route path="/interview" element={<ProtectedRoute><Interview /></ProtectedRoute>}/>
             <Route path="/instructions" element={<ProtectedRoute> <InterviewInstructions /></ProtectedRoute>} />
           </Routes>

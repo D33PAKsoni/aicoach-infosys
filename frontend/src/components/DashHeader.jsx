@@ -17,7 +17,9 @@ const handleLogout = async () => {
 
     await API.post("/auth/logout");
 
-    navigate("/login");
+    // navigate("/login");
+    window.location.href = "/login";
+
 
   } catch (err) {
 
@@ -29,6 +31,8 @@ const handleLogout = async () => {
 
 const { user } = useContext(AuthContext);
 var user1= "Anonymous"
+
+user1 = user?.full_name.split(' ')[0] || "Anonymous";
 if(user){
    console.log("Logged in as", user.email);
    

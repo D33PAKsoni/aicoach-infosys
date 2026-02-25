@@ -29,6 +29,7 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
         return {"error": "User exists"}
 
     new_user = models.User(
+        full_name=user.full_name,
         email=user.email,
         password_hash=auth.hash_password(user.password)
     )
@@ -151,6 +152,7 @@ def get_me(request: Request, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
 
     return {
+        "full_name": db_user.full_name,
         "id": db_user.id,
         "email": user_email
     }

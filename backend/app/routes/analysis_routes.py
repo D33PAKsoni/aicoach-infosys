@@ -107,10 +107,6 @@ def transcribe_audio(audio: UploadFile = File(...)):
 
 
 
-
-
-
-
 @router.post("/speak")
 async def speak_text(text: str = Form(...)):
     file_id = str(uuid.uuid4())
@@ -137,7 +133,16 @@ async def speak_text(text: str = Form(...)):
     return FileResponse(audio_path, media_type="audio/mpeg" if audio_path.endswith(".mp3") else "audio/wav")
 
 
-
+@router.post("/cleanup-audio")
+async def cleanup_audio():
+    try:
+        for filename in os.listdir(AUDIO_DIR):
+            file_path = os.path.join(AUDIO_DIR, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        return {"status": "Temporary audio cleared"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Cleanup failed: {str(e)}")
 
 
 

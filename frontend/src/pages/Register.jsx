@@ -8,6 +8,8 @@ import { Header } from "../components/Header";
 
 export default function Register() {
 
+
+  const [fullName, setFullName] = useState("");
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const navigate = useNavigate();
@@ -18,11 +20,13 @@ export default function Register() {
     try {
 
       await API.post("/auth/register", {
+        full_name: fullName,
         email,
         password
       });
 
-      navigate("/dashboard");
+      // navigate("/dashboard");
+        window.location.href = "/dashboard";
       // alert("Registration successful");
 
     } catch(err) {
@@ -49,6 +53,9 @@ export default function Register() {
       <div>
 
       <h2>Register</h2>
+      <AuthInput placeholder="Full Name"
+        onChange={(e)=>setFullName(e.target.value)} />
+        
 
       <AuthInput placeholder="Email"
         onChange={(e)=>setEmail(e.target.value)} />

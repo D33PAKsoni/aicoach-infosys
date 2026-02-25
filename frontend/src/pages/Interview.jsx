@@ -277,7 +277,9 @@ const Interview = () => {
           user_id: user?.id,
           turns: interviewHistory.current
         });
-        navigate('/dashboard');
+        await API.post("/cleanup-audio");
+        // navigate('/dashboard');
+        window.location.href = "/dashboard";
       } catch (err) {
         console.error("Failed to save session:", err);
         alert("Error saving session. Please try again.");
