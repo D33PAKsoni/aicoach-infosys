@@ -41,3 +41,14 @@ class InterviewTurn(Base):
     dominant_behavior = Column(String(50))
     
     session = relationship("InterviewSession", back_populates="turns")
+
+
+class Resume(Base):
+    __tablename__ = "resumes"
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    file_name = Column(String(255))
+    file_path = Column(String(355))
+    uploaded_at = Column(TIMESTAMP, default=datetime.now(timezone.utc))
+    
+    user = relationship("User")

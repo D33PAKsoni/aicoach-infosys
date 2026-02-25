@@ -36,6 +36,8 @@ __pycache__/
 venv/
 ENV/
 env/
+temp_audio/
+uploads/
 
 # ML Data (Ignore large datasets, keep the code)
 ml/data/

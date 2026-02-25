@@ -8,11 +8,12 @@ import MockInterview from '../components/MockInterview.jsx';
 import Statistics from '../components/Statistics.jsx';
 import Profile from '../components/Profile.jsx';
 import Records from '../components/Records.jsx';
+import MyResumes from '../components/MyResumes.jsx';
 
 
 const Dashboard = () => {
   const [selected, setSelected] = useState("stats"); 
-  const componentMap = { resume: <Resume />, interview: <MockInterview />, records: <Records />, stats: <Statistics />, profile: <Profile /> };
+  const componentMap = { resume: <Resume />, interview: <MockInterview />, records: <Records />, stats: <Statistics />, myResume: <MyResumes /> };
 
 
   return (
@@ -31,19 +32,19 @@ const Dashboard = () => {
       <div className="dashboard-overlay">
         <div className="quick-menu">
           {/* <div className={`menu-div ${selected === "profile" ? "selected" : ""}`} onClick={() => setSelected("profile")}>
-            <User size={32} color="black" />
+            <BarChart size={32} color="black" />
             <p>User</p>
-          </div>
-          <div className={`menu-div ${selected === "records" ? "selected" : ""}`} onClick={() => setSelected("records")}>
-            <History size={32} color="black" />
-            <p>Records</p>
           </div> */}
+          <div className={`menu-div ${selected === "myResume" ? "selected" : ""}`} onClick={() => setSelected("myResume")}>
+            <User size={32} color="black" />
+            <p>My Resumes</p>
+          </div>
           <div className={`menu-div ${selected === "resume" ? "selected" : ""}`} onClick={() => setSelected("resume")}>
             <FileText size={32} color="black" />
             <p>Resume Match</p>
           </div>
           <div className={`menu-div ${selected === "stats" ? "selected" : ""}`} onClick={() => setSelected("stats")}>
-            <BarChart size={32} color="black" />
+            <History size={32} color="black" />
             <p>Statistics</p>
           </div>
           <div className={`menu-div ${selected === "interview" ? "selected" : ""}`} onClick={() => setSelected("interview")}>

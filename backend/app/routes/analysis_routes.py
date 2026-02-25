@@ -8,7 +8,7 @@ import whisper
 import pypdf
 import docx
 import anyio 
-from fastapi import APIRouter, File, UploadFile, Form, HTTPException
+from fastapi import APIRouter, File, UploadFile, Form, HTTPException, Depends, Request
 from fastapi.responses import FileResponse
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -18,8 +18,10 @@ from gtts import gTTS
 import pyttsx3
 from google import genai
 from google.genai import types
-
+from .. import models
 from ..core.config import settings
+from sqlalchemy.orm import Session
+from ..database import SessionLocal
 
 router = APIRouter()
 
@@ -31,6 +33,14 @@ MODEL_ID = "gemini-2.5-flash"
 chat_sessions = {}
 AUDIO_DIR = "temp_audio"
 os.makedirs(AUDIO_DIR, exist_ok=True)
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 def get_embedding(text):
     words = text.split()
@@ -73,6 +83,39 @@ async def analyze_match(resume: UploadFile = File(...), jd_file: UploadFile = Fi
     score = cosine_similarity([r_emb], [j_emb])[0][0]
     
     return {"match_percentage": round(float(score) * 100, 2), "status": "Success"}
+
+
+
+ 
+
+@router.get("/resumes")
+async def get_user_resumes(user_id: int, db: Session = Depends(get_db)):
+    return db.query(models.Resume).filter(models.Resume.user_id == user_id).all()
+
+@router.get("/resumes/download/{resume_id}")
+async def download_resume(resume_id: int, db: Session = Depends(get_db)):
+    res_db = db.query(models.Resume).filter(models.Resume.id == resume_id).first()
+    if not res_db or not os.path.exists(res_db.file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(res_db.file_path, filename=res_db.file_name)
+
+@router.post("/upload-resume")
+async def upload_resume(user_id: int = Form(...), file: UploadFile = File(...), db: Session = Depends(get_db)):
+    upload_dir = "uploads/resumes"
+    os.makedirs(upload_dir, exist_ok=True)
+    
+    file_path = os.path.join(upload_dir, f"{uuid.uuid4()}_{file.filename}")
+    with open(file_path, "wb") as buffer:
+        buffer.write(await file.read())
+    
+    new_resume = models.Resume(user_id=user_id, file_name=file.filename, file_path=file_path)
+    db.add(new_resume)
+    db.commit()
+    return {"message": "Resume saved to library"}
+
+
+
+
 
 @router.post("/transcribe")
 def transcribe_audio(audio: UploadFile = File(...)):

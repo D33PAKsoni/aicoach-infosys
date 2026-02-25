@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FileUp, FileText, CheckCircle2, AlertCircle, RefreshCw, Search } from 'lucide-react';
+import { FileUp, FileText, CheckCircle2, AlertCircle, RefreshCw, Search, Library } from 'lucide-react';
 import '../styles/Resume.css';
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import API from "../api";
 
 const Resume = () => {
     const [resumeFile, setResumeFile] = useState(null);
@@ -10,6 +13,39 @@ const Resume = () => {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
     const [error, setError] = useState("");
+    const [savedResumes, setSavedResumes] = useState([]);
+
+
+    const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        const fetchResumes = async () => {
+            try {
+                const res = await API.get(`/resumes?user_id=${user.id}`);
+                setSavedResumes(res.data);
+            } catch (err) { console.error("Error fetching resumes", err); }
+        };
+        if (user) fetchResumes();
+    }, [user]);
+    
+
+
+    const handleSelectFromLibrary = async (e) => {
+        const resumeId = e.target.value;
+        if (!resumeId) return;
+
+        try {
+            const response = await API.get(`/resumes/download/${resumeId}`, { responseType: 'blob' });
+            
+            const selectedInfo = savedResumes.find(r => r.id === parseInt(resumeId));
+            
+            const file = new File([response.data], selectedInfo.file_name, { type: response.data.type });
+            setResumeFile(file);
+        } catch (err) {
+            alert("Could not load the selected resume.");
+        }
+    };
+
 
     const handleAnalyze = async (e) => {
         e.preventDefault();
@@ -49,6 +85,15 @@ const Resume = () => {
                             <FileUp className={resumeFile ? "active-icon" : ""} />
                             <p>{resumeFile ? resumeFile.name : "Upload Resume (PDF/DOCX)"}</p>
                         </label>
+                        <div className="library-select-wrapper">
+                            <Library size={16} />
+                            <select onChange={handleSelectFromLibrary} className="resume-dropdown">
+                                <option value="">Select from your Library...</option>
+                                {savedResumes.map(r => (
+                                    <option key={r.id} value={r.id}>{r.file_name}</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
                     <div className="upload-card">
