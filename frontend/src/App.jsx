@@ -17,7 +17,7 @@ export const App = () => {
     <div>
       {/* <Landing /> */}
       <AuthProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/aicoach-infosys">
            <Routes>
             <Route path="/" element={<Landing/>}/>
             <Route path="/login" element={<Login/>}/>
