@@ -1,8 +1,6 @@
-
-
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { Calendar, Clock, Award, X, ChevronRight, BarChart3, MessageSquareText } from 'lucide-react';
+import { Calendar, Clock, Award, X, ChevronRight, BarChart3, MessageSquareText, Loader } from 'lucide-react';
 import '../styles/Statistics.css';
 import { AuthContext } from "../context/AuthContext";
 
@@ -41,7 +39,7 @@ const Statistics = () => {
         }
     };
 
-    if (loading) return <div className="stats-loader"><BarChart3 className="spinning" /> Loading Records...</div>;
+    if (loading) return <div className="stats-loader"><Loader className="spinning" /> Loading Records...</div>;
 
     return (
         <div className="statistics-page">

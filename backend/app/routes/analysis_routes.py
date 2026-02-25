@@ -113,7 +113,18 @@ async def upload_resume(user_id: int = Form(...), file: UploadFile = File(...), 
     db.commit()
     return {"message": "Resume saved to library"}
 
-
+@router.delete("/resumes/{resume_id}")
+async def delete_resume(resume_id: int, db: Session = Depends(get_db)):
+    res_db = db.query(models.Resume).filter(models.Resume.id == resume_id).first()
+    if not res_db:
+        raise HTTPException(status_code=404, detail="Resume not found")
+    
+    if os.path.exists(res_db.file_path):
+        os.remove(res_db.file_path)
+        
+    db.delete(res_db)
+    db.commit()
+    return {"message": "Resume deleted successfully"}
 
 
 

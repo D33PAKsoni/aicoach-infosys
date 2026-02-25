@@ -165,8 +165,9 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    width:100%;
     gap: 10px;
-    color: #4ade80;
+    color: #ffffff;
 }
 
 .spinning { animation: spin 2s linear infinite; }

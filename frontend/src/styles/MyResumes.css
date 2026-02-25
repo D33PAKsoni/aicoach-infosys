@@ -1,0 +1,175 @@
+.my-resumes-container {
+    position: relative;
+    padding: 30px;
+    color: white;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.library-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.library-title {
+    font-size: 24px;
+    border-left: 4px solid #ffffff;
+    padding-left: 15px;
+}
+
+.upload-lib-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.upload-lib-btn:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.resume-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.resume-card {
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s ease;
+}
+
+.resume-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.resume-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    overflow: hidden;
+}
+
+.file-icon {
+    color: #4ade80; /* Accent color matching Resume.jsx status */
+    flex-shrink: 0;
+}
+
+.file-name {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.delete-resume-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.delete-resume-btn:hover {
+    color: #f87171; /* Red for delete */
+    background: rgba(248, 113, 113, 0.1);
+}
+
+.spinning { animation: spin 1s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+
+.resume-card {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.resume-card:hover {
+    transform: translateY(-3px);
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.view-icon {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.preview-overlay {
+    position: absolute;
+    top: 0 ;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.preview-content {
+    width: 80%;
+    height: 90%;
+    background: #1a1a1a;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-header {
+    padding: 15px 25px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f87171;
+}
+
+iframe {
+    border: none;
+    background: white;
+}

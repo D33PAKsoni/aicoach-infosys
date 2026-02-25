@@ -85,12 +85,13 @@ const Resume = () => {
                             <FileUp className={resumeFile ? "active-icon" : ""} />
                             <p>{resumeFile ? resumeFile.name : "Upload Resume (PDF/DOCX)"}</p>
                         </label>
+                        <div className="separator"><span>OR</span></div>
                         <div className="library-select-wrapper">
-                            <Library size={16} />
+                            <Library size={30} />
                             <select onChange={handleSelectFromLibrary} className="resume-dropdown">
-                                <option value="">Select from your Library...</option>
+                                <option value="" className='select-menu'>Select from your Library...</option>
                                 {savedResumes.map(r => (
-                                    <option key={r.id} value={r.id}>{r.file_name}</option>
+                                    <option className='select-menu' key={r.id} value={r.id}>{r.file_name}</option>
                                 ))}
                             </select>
                         </div>

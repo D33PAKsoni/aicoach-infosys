@@ -5,6 +5,7 @@ import API from '../api';
 import { AuthContext } from "../context/AuthContext";
 import '../styles/Interview.css';
 
+
 const calculateMostCommon = (arr) => {
   if (!arr || arr.length === 0) return "NA";
   const frequency = {};

@@ -20,7 +20,6 @@ const ResumeMatch = () => {
                   </div>
                 </div>
 
-                {/* JD Upload */}
                 <div className="card upload-card">
                   <div className="card-header">
                     <Briefcase size={20} />
