@@ -64,7 +64,7 @@ const MockInterview = () => {
         if (jdText) formData.append("jd_text", jdText);
 
         try {
-            const response = await axios.post("http://localhost:8000/analyze", formData);
+            const response = await API.post("/analyze", formData);
             setResult(response.data);
         } catch (err) {
             setError("Analysis failed. Please check your file formats.");

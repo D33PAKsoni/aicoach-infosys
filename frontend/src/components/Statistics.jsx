@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Calendar, Clock, Award, X, ChevronRight, BarChart3, MessageSquareText, Loader } from 'lucide-react';
 import '../styles/Statistics.css';
 import { AuthContext } from "../context/AuthContext";
+import API from "../api";
 
 const Statistics = () => {
     const [sessions, setSessions] = useState([]);
@@ -16,7 +17,7 @@ const Statistics = () => {
     useEffect(() => {
         const fetchSessions = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/get-sessions?user_id=${userID}`);
+                const response = await API.get(`/get-sessions?user_id=${userID}`);
                 setSessions(response.data);
             } catch (err) {
                 console.error("Error fetching sessions:", err);
@@ -30,7 +31,7 @@ const Statistics = () => {
     const handleSessionClick = async (session) => {
         setDetailsLoading(true);
         try {
-            const response = await axios.get(`http://localhost:8000/session-details/${session.id}`);
+            const response = await API.get(`/session-details/${session.id}`);
             setSelectedSession({ ...session, turns: response.data });
         } catch (err) {
             console.error("Error fetching turn details:", err);

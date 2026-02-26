@@ -115,7 +115,9 @@ const Interview = () => {
   }, []);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/vision");
+    // const ws = new WebSocket("ws://localhost:8000/ws/vision");
+    const wsUrl = API.defaults.baseURL.replace("https://", "wss://") + "/ws/vision";
+    const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
     ws.onmessage = (event) => {
