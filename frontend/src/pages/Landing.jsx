@@ -15,6 +15,8 @@ import {
 } from 'lucide-react'
 import '../styles/Landing.css'
 import blackHole2 from '../assets/videoplayback.webm';
+import logo from '../assets/logo1.png';
+import Candidate from '../assets/candidate.png';
 
 export const Landing = () => {
 
@@ -44,7 +46,7 @@ export const Landing = () => {
           <div className="hero-display">
             <div className="hero-dash">
               <div className="hero-dash-top">
-                <div className="hero-dash-top-logo"><img src="src\assets\logo1.png" alt="logo"></img></div>
+                <div className="hero-dash-top-logo"><img src={logo} alt="logo"></img></div>
                 <div className="hero-dash-top-window"><p>AI-Powered Interview Coach Live</p></div>
                 <div className="hero-dash-top-cells">
                   <div className="hero-dash-top-cell1"></div>
@@ -56,7 +58,7 @@ export const Landing = () => {
                 <div className="hero-dash-main-left"></div>
                 <div className="hero-dash-main-right">
                   <div className="hero-dash-main-right-top">
-                    <img src="src\assets\candidate.png" alt="candidate"></img>
+                    <img src={Candidate} alt="candidate"></img>
                   </div>
                   <div className="hero-dash-main-right-bottom">
                     <p>Camera Presence:</p>
