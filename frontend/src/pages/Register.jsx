@@ -25,8 +25,8 @@ export default function Register() {
         password
       });
 
-      // navigate("/dashboard");
-        window.location.href = "/dashboard";
+      navigate("/dashboard");
+        // window.location.href = "/dashboard";
       // alert("Registration successful");
 
     } catch(err) {

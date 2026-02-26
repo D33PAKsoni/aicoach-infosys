@@ -26,8 +26,8 @@ export default function Login() {
       email,
       password
     });
-    // navigate("/dashboard");
-    window.location.href = "/dashboard";
+    navigate("/dashboard");
+    // window.location.href = "/dashboard";
 
 
   } catch(err) {
