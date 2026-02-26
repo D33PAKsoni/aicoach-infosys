@@ -48,13 +48,13 @@ section {
 }
 .features {  
   z-index: 2; 
-  background-image: url('../assets/stars.jpg');
+  background-image: url('../assets/galaxy.jpg');
   background-size: cover;
   height: 100vh; 
 }
 .results { 
   z-index: 3;
-  background-image: url('../assets/galaxy.jpg');
+  background-image: url('../assets/stars.jpg');
   background-size: cover;
   height: 100vh;  
 }

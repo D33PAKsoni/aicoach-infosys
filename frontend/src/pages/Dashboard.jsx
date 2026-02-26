@@ -9,6 +9,7 @@ import Statistics from '../components/Statistics.jsx';
 import Profile from '../components/Profile.jsx';
 import Records from '../components/Records.jsx';
 import MyResumes from '../components/MyResumes.jsx';
+import blackHole from '../assets/videoplayback3.webm';
 
 
 const Dashboard = () => {
@@ -25,7 +26,7 @@ const Dashboard = () => {
           muted
           loop
         >
-          <source src="src/assets/videoplayback3.webm" type="video/webm" />
+          <source src={blackHole} type="video/webm" />
           Your browser does not support the video tag.
         </video>
       </div>

@@ -5,6 +5,7 @@ import {
     Play, ArrowLeft, Info, AlertTriangle, Monitor 
 } from 'lucide-react';
 import '../styles/InterviewInstructions.css';
+import Stars from '../assets/videoplayback5.webm';
 
 const InterviewInstructions = () => {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ const InterviewInstructions = () => {
                   muted
                   loop
                 >
-                  <source src="src/assets/videoplayback5.mp4" type="video/mp4" />
+                  <source src={Stars} type="video/webm" />
                   Your browser does not support the video tag.
                 </video>
             </div>

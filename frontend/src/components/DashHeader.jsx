@@ -4,6 +4,10 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import API from "../api";
 import { useNavigate } from "react-router-dom";
+import logo from '../assets/logo1.png';
+import info from '../assets/info.png';
+import features from '../assets/features.png';
+import discord from '../assets/discord.png';
 
 
 
@@ -44,7 +48,7 @@ if(user){
       <header className="navbar-container">
         <div className="nav-pill logo-pill">
           <img 
-            src="src\assets\logo1.png" 
+            src={logo} 
             alt="Logo Left" 
             className="logo-icon" 
           />
@@ -56,7 +60,7 @@ if(user){
           </a>
 
           <img 
-            src="src\assets\info.png" 
+            src={info} 
             alt="Logo Right" 
             className="logo-icon" 
           />
@@ -84,7 +88,7 @@ if(user){
                     
                     <div className="floating-icon-container">
                       <img 
-                        src="src\assets\features.png" 
+                        src={features} 
                         alt="Feature Icon" 
                         className="float-icon" 
                       />
@@ -108,7 +112,7 @@ if(user){
 
                     <div className="floating-icon-container">
                       <img 
-                        src="src\assets\discord.png" 
+                        src={discord} 
                         alt="Connect Icon" 
                         className="float-icon" 
                       />

@@ -4,7 +4,7 @@ import AuthInput from "../components/AuthInput";
 import "../styles/auth.css";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../components/Header";
-
+import Stars from '../assets/videoplayback5.webm';
 
 export default function Register() {
 
@@ -45,7 +45,7 @@ export default function Register() {
           muted
           loop
         >
-          <source src="src/assets/videoplayback5.mp4" type="video/mp4" />
+          <source src={Stars} type="video/webm" />
           Your browser does not support the video tag.
         </video>
       </div>

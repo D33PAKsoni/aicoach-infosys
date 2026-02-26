@@ -14,6 +14,7 @@ import {
   Linkedin 
 } from 'lucide-react'
 import '../styles/Landing.css'
+import blackHole2 from '../assets/videoplayback.webm';
 
 export const Landing = () => {
 
@@ -29,7 +30,7 @@ export const Landing = () => {
           muted
           loop
         >
-          <source src="src/assets/videoplayback.webm" type="video/webm" />
+          <source src={blackHole2} type="video/webm" />
           Your browser does not support the video tag.
         </video>
         </div>
