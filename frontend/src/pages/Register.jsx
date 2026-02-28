@@ -26,7 +26,7 @@ export default function Register() {
       });
 
       // navigate("/dashboard");
-        window.location.href = "/aicoach-infosys/dashboard";
+        window.location.href = "/dashboard";
       // alert("Registration successful");
 
     } catch(err) {

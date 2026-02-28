@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     
     # External APIs
     GEMINI_API_KEY: str
+    FRONTEND_URL: str
 
     @property
     def DATABASE_URL(self) -> str:

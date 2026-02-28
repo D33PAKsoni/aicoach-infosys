@@ -9,6 +9,7 @@ from ..core.config import settings
 
 
 
+
 router = APIRouter()
 
 def get_db():
@@ -45,8 +46,8 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
         key="access_token",
         value=token,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=True,
+        samesite="none",
         path="/"
     )
 
@@ -73,8 +74,8 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
         key="access_token",
         value=token,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=True,
+        samesite="none",
         path="/"
     )
 
@@ -108,14 +109,14 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
     jwt_token = auth.create_token({"sub": user_info["email"]})
 
 
-    response = RedirectResponse("http://localhost:5173/dashboard/")
+    response = RedirectResponse(settings.FRONTEND_URL + "/dashboard")
 
     response.set_cookie(
         key="access_token",
         value=jwt_token,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=True,
+        samesite="none",
         path="/"
     )
 
@@ -166,8 +167,10 @@ def logout():
 
     response.delete_cookie(
         key="access_token",
-        path="/"
+        path="/",
+        samesite="none",  
+        secure=True,       
+        httponly=True
     )
 
     return response
-
