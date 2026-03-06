@@ -23,3 +23,17 @@ class InterviewSaveRequest(BaseModel):
     session_id: str
     user_id: Optional[int] = None
     turns: List[TurnData]
+
+class SlotRequest(BaseModel):
+    user_id: int
+
+class SlotResponse(BaseModel):
+    status: str
+    slot_id: Optional[int] = None
+    wait_time_seconds: Optional[int] = 0
+    message: Optional[str] = None
+
+class WaitingStatus(BaseModel):
+    active_users: int
+    estimated_wait_minutes: float
+    wait_time_seconds: int

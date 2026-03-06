@@ -23,7 +23,7 @@ const calculateMostCommon = (arr) => {
 
 const SILENCE_THRESHOLD = 15;
 const SILENCE_DURATION = 1500;
-const INITIAL_TIMER = 900;
+const INITIAL_TIMER = 600;
 
 const Interview = () => {
   const location = useLocation();
@@ -109,6 +109,7 @@ const Interview = () => {
       if (secondsLeft.current <= 0) {
         clearInterval(interval);
         alert("Interview time is up!");
+        handleQuit();
       }
     }, 1000);
     return () => clearInterval(interval);
@@ -281,7 +282,7 @@ const Interview = () => {
           turns: interviewHistory.current
         });
         await API.post("/cleanup-audio");
-        // navigate('/dashboard');
+        releaseSlot();
         window.location.href = "/dashboard";
       } catch (err) {
         console.error("Failed to save session:", err);
@@ -289,13 +290,20 @@ const Interview = () => {
       }
   };
 
-  
+  const releaseSlot =  async () => {
+    try {
+      await API.post(`/release-slot/${user?.id}`);
+    } catch (err) {
+      console.error("Failed to release slot:", err);
+    }
+  };
+
   const behaviorColor = useMemo(() => {
     const map = { Composed: "white", Stressed: "yellow", Confident: "green" };
     return map[metrics.behaviorMetric] || "red";
   }, [metrics.behaviorMetric]);
 
-  if (!resume) return <div>Redirecting to dashboard...</div>;
+  if (!resume) return <div>Invalid request</div>;
 
   return (
     <div className="interview-conatiner">         
@@ -309,7 +317,7 @@ const Interview = () => {
             <p>Recording</p>
           </div>
           <div>
-            <div className="timer"><p>Time Left :</p><span ref={timeRef}>15:00</span></div>
+            <div className="timer"><p>Time Left :</p><span ref={timeRef}>10:00</span></div>
             <div className="quit" onClick={handleQuit}> 
               <div className="quit-dot"><PhoneOff color='white'/></div>
               <p>Quit Interview</p>

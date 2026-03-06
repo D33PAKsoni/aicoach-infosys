@@ -1,4 +1,4 @@
-import React from 'react';
+import {useRef, useEffect} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     ShieldCheck, Camera, Mic, Wifi, Maximize, 
@@ -10,6 +10,11 @@ import Stars from '../assets/videoplayback5.webm';
 const InterviewInstructions = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const INITIAL_TIMER = 120;
+    const secondsLeft = useRef(INITIAL_TIMER);
+    const timeRef = useRef(null);
+
+
     
     const { resume, jd, score } = location.state || {};
 
@@ -23,6 +28,24 @@ const InterviewInstructions = () => {
 
         navigate('/interview', { state: { resume, jd, score } });
     };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+          secondsLeft.current -= 1;
+          if (timeRef.current) {
+            const minutes = Math.floor(secondsLeft.current / 60);
+            const seconds = secondsLeft.current % 60;
+            timeRef.current.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+          }
+          if (secondsLeft.current <= 0) {
+            clearInterval(interval);
+            handleStartInterview(); 
+          }
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+    
+    if (!resume) return <div>Invalid request</div>;
 
     return (
         <div className="instructions-page">
@@ -90,6 +113,7 @@ const InterviewInstructions = () => {
                             <Play size={20} fill="black" /> Start Mock Interview
                         </button>
                         <p className="fullscreen-hint">Clicking will enter Fullscreen mode automatically</p>
+                        <div className="timer"><p>Redirecting to Interview Page in:</p><span ref={timeRef}>2:00</span></div>
                     </div>
                 </div>
             </div>

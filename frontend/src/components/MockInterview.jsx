@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { FileUp, FileText, CheckCircle2, AlertCircle, RefreshCw, Search, Library } from 'lucide-react';
+import { FileUp, FileText, CheckCircle2, AlertCircle, RefreshCw, Search, Library, Loader } from 'lucide-react';
 import '../styles/Resume.css';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from "react";
@@ -16,6 +15,10 @@ const MockInterview = () => {
     const [error, setError] = useState("");
     const { user } = useContext(AuthContext);
     const [savedResumes, setSavedResumes] = useState([]);
+    const [waitTime, setWaitTime] = useState(0);
+    const [isFull, setIsFull] = useState(false);
+    const [slotWindows, setSlotWindows] = useState(false);
+    const [windowLoading,  setWindowLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -31,6 +34,46 @@ const MockInterview = () => {
         if (user) fetchResumes();
     }, [user]);
     
+
+    const handleCheckSlots = async () => {
+        setSlotWindows(true);
+        setWindowLoading(true);
+        
+        try {
+            const response = await API.get('/check-slots');
+            const data = response.data;
+            setWindowLoading(false);
+            
+            if (data.status === 'available') {
+                console.log("Slot available, start interview...");
+                console.log("Acquired slot ID:", data.slot_id);
+                setIsFull(false);
+            } else {
+                setIsFull(true);
+                setWaitTime(data.wait_time_seconds);
+            }
+        } catch (error) {
+            console.error("Error acquiring slot:", error);
+            alert("Failed to connect to server. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    const handleStartInterview = async () => {
+        try {
+          const acquireResponse = await API.post('/acquire-slot', { user_id: user.id });
+            if (acquireResponse.data.status === "success") {
+                navigate('/instructions', { state: { resume: resumeFile, jd:jdFile, score: result } });
+            } else {
+                alert("Failed to acquire interview slot. Please recheck availability.");
+            }
+        } catch (error) {
+            console.error("Error starting interview:", error);
+            alert("Failed to start interview. Please try again.");
+        }
+    };
 
 
     const handleSelectFromLibrary = async (e) => {
@@ -73,6 +116,7 @@ const MockInterview = () => {
             setLoading(false);
         }
     };
+    
 
     return (
         <div className="resume-match-page">
@@ -146,12 +190,30 @@ const MockInterview = () => {
                                     {result.match_percentage > 70 ? "Strong Fit" : "Needs Optimization"}
                                 </div>
                                 {result.match_percentage > 50 && 
-                                <button className="reset-btn" onClick={() => navigate('/instructions',{ state: { resume: resumeFile, jd:jdFile, score: result } })}>Proceed to Interview</button>}
+                                <button className="reset-btn" onClick={handleCheckSlots}>Proceed to Interview</button>}
                             </div>
                         </div>
                     )}
                 </div>
             </div>
+
+            {slotWindows && (
+                <div className="slot-window" onClick={() => setSlotWindows(false)}>
+                    {windowLoading ? (<div className="slot-loading"><Loader size={20}/> <p>Checking slot availability...</p></div>) : (
+                        isFull ? (
+                            <div className="slot-full">
+                                <p>All slots are currently full. Estimated wait time:</p>
+                                <p>{String(Math.floor(waitTime/60))}min {String(waitTime % 60).padStart(2, '0')}sec</p>
+                                <button className="check-btn" onClick={handleCheckSlots}>Recheck</button>
+                            </div>): 
+                            (<div className="slot-available">
+                                <p>Interview slot is available. You can proceed to the interview.</p>
+                                <button className="check-btn" onClick={handleStartInterview}>Start</button>
+                            </div>)
+                    )}
+
+                </div>
+            )}
         </div>
     );
 };

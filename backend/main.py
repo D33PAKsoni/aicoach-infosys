@@ -2,13 +2,36 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from contextlib import asynccontextmanager 
+import torch
 
 from app.routes import auth_routes, analysis_routes, vision_routes, session_routes
 from app.core.config import settings
 
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     torch.set_num_threads(1)
+#     print("AI Interview Coach: Starting up and loading models...")
+#     yield
+#     print("AI Interview Coach: Shutting down...")
+
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    from app.database import SessionLocal
+    from app.models import InterviewSlot
+
+    torch.set_num_threads(1)
     print("AI Interview Coach: Starting up and loading models...")
+    
+    db = SessionLocal()
+    # Check if slots exist, if not, create them
+    if db.query(InterviewSlot).count() == 0:
+        db.add(InterviewSlot(id=1, is_active=False))
+        db.add(InterviewSlot(id=2, is_active=False))
+        db.commit()
+    db.close()
+    
     yield
     print("AI Interview Coach: Shutting down...")
 
@@ -38,4 +61,8 @@ app.include_router(session_routes.router, tags=["History"])
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, workers=2)
+
+
+
+

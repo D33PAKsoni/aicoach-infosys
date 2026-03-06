@@ -188,3 +188,40 @@
     align-items: center;
     gap: 10px;
 }
+
+
+.slot-window{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    display: flex ;
+    justify-content: center;
+    align-items: center;
+    background-color: #0000007c;
+    font-weight: bolder;
+
+}
+.slot-loading, .slot-full , .slot-available {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    background: rgb(0, 0, 0);
+
+    padding: 30px;
+    border-radius: 12px;
+    min-width: 200px;
+    min-height: 100px;
+}
+
+.check-btn {
+    display: block;
+    margin: auto 0;
+    padding: 8px 20px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+}
