@@ -7,3 +7,7 @@ const API = axios.create({
 
 export default API;
 
+export const API2 = axios.create({
+  baseURL: "https://deepakkumarsoni-aicoach2.hf.space",
+  withCredentials: true
+});

@@ -105,6 +105,7 @@
 .analyze-btn {
     width: 100%;
     padding: 15px;
+    margin-right: 50px;
     background: #ffffff;
     color: black;
     border: none;
@@ -225,3 +226,206 @@
     border-radius: 8px;
     cursor: pointer;
 }
+
+.multiple-select{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-top: 10px;
+}
+
+
+.slide-switch {
+    display: inline-block;
+    position: relative;
+    margin: 10px;
+    min-width: 60px;
+    height: 30px;
+    background: rgba(255, 0, 0, 0.2);
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.slide-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 24px; height: 24px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.slide-switch.active::after {
+    left:33px;
+}
+
+.slide-switch.active {
+    background: rgba(74, 222, 128, 0.2);
+}
+
+.submit-div{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+}
+
+.stars{
+    color:#ffffff;
+}
+
+.stars.active{
+    color: #c95795;
+}
+
+.slide-switch.activeAI::after {
+    left:33px;
+}
+
+.slide-switch.activeAI {
+    background: linear-gradient(-45deg, #cc099e, #4285f4, #7a45b6, #d96570);
+    background-size: 400% 400%;
+    animation: gradient 3s ease-in-out infinite;
+}
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+.batchWindow{
+    position: absolute;
+    z-index: 1000000;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    min-width: 100px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.resultHead{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resultHead h3{
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+}
+.resultHead span{
+    cursor: pointer;
+    color: #ccc;
+    font-size: 20px;
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+}
+
+.resultWindow{
+    min-width: 400px;
+    max-width: 80%;
+    max-height: 500px;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #000000af;
+    backdrop-filter: blur(10px);
+    overflow: scroll;
+    scrollbar-width: none;
+    display: flex;
+    gap:5px;
+    flex-direction: column;
+
+}
+
+.resultWindow ul{
+    list-style: none;
+}
+
+.batch-item{
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+
+    margin: 5px 0;
+}
+
+.main-result{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    width: 100%;
+    justify-content: space-between;
+    background-color: #1a1a1a93;
+    padding: 15px 15px 15px 15px;
+}
+.sub-result{
+    display: flex;
+    flex-wrap:nowrap;
+    gap: 10px;
+}
+
+
+.main-result p{
+    font-weight: 600;
+}
+
+.main-result button{
+    padding: 6px 15px;
+    margin-left: 10px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.main-result div, .sub-result div div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.sub-result div div{
+    background-color: #000000af;
+    padding: 5px 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: #c9c757;
+    text-wrap: nowrap;
+}
+
+.sub-result div p{
+    text-align: center;
+    background-color: #0000003c;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 10px 0px 10px 0px;
+    height: 90%;
+}
+.sub-result{
+    max-height: 0;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0px 15px 0px 15px;
+}
+
+.sub-result.is-open {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 10px;
+    padding: 0px 15px 15px 15px;
+}
+

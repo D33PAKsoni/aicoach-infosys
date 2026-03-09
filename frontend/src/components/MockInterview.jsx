@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { FileUp, FileText, CheckCircle2, AlertCircle, RefreshCw, Search, Library, Loader } from 'lucide-react';
+import { FileUp, FileText, CheckCircle2, AlertCircle, RefreshCw, Search, Library, Layers, Stars, Lightbulb, Award, BrainCircuit, Loader} from 'lucide-react';
 import '../styles/Resume.css';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import API from "../api";
+import { API2 } from '../api';
 
 const MockInterview = () => {
     const [resumeFile, setResumeFile] = useState(null);
@@ -19,6 +20,13 @@ const MockInterview = () => {
     const [isFull, setIsFull] = useState(false);
     const [slotWindows, setSlotWindows] = useState(false);
     const [windowLoading,  setWindowLoading] = useState(false);
+    const [multiple, setMultiple] = useState(false);
+    const [aimode, setAiMode] = useState(false);
+    const [batch, setBatch] = useState(false);
+    const [batchData, setBatchData] = useState({});
+    const [expand, setExpand] = useState(null);
+
+    
 
     const navigate = useNavigate();
 
@@ -77,8 +85,10 @@ const MockInterview = () => {
 
 
     const handleSelectFromLibrary = async (e) => {
+        setBatch(false);
         const resumeId = e.target.value;
         if (!resumeId) return;
+        console.log("Selected resume ID from library:", resumeId);
 
         try {
             const response = await API.get(`/resumes/download/${resumeId}`, { responseType: 'blob' });
@@ -90,9 +100,41 @@ const MockInterview = () => {
         } catch (err) {
             alert("Could not load the selected resume.");
         }
+        finally{
+            if (multiple) {
+                handleCheckSlots();
+                
+            }
+        }
     };
 
-    const handleAnalyze = async (e) => {
+
+    // const handleAnalyze = async (e) => {
+    //     e.preventDefault();
+    //     if (!resumeFile || (!jdFile && !jdText)) {
+    //         setError("Please provide both a Resume and a Job Description.");
+    //         return;
+    //     }
+
+    //     setError("");
+    //     setLoading(true);
+    //     const formData = new FormData();
+    //     formData.append("resume", resumeFile);
+    //     if (jdFile) formData.append("jd_file", jdFile);
+    //     if (jdText) formData.append("jd_text", jdText);
+
+    //     try {
+    //         const response = await API.post("/analyze", formData);
+    //         setResult(response.data);
+    //     } catch (err) {
+    //         setError("Analysis failed. Please check your file formats.");
+    //         console.error(err);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+       const handleAnalyze = async (e) => {
         e.preventDefault();
         if (!resumeFile || (!jdFile && !jdText)) {
             setError("Please provide both a Resume and a Job Description.");
@@ -107,13 +149,67 @@ const MockInterview = () => {
         if (jdText) formData.append("jd_text", jdText);
 
         try {
-            const response = await API.post("/analyze", formData);
-            setResult(response.data);
+            if (aimode){
+                const aiResponse = await API2.post("/aianalyze", formData);
+                setResult(aiResponse.data);
+            }
+            // else if (multiple){
+            //     formData.append("user_id", user?.id);
+            //     const multiResponse = await API.post("/multiplematch", formData);
+            //     console.log(multiResponse.data);
+
+            //     // setResult(multiResponse.data);
+            // }
+            else {
+                const response = await API2.post("/analyze", formData);
+                setResult(response.data);
+            }
         } catch (err) {
-            setError("Analysis failed. Please check your file formats.");
+            if (aimode) setError("AI Analysis failed. Try again without AI mode.");
+            else setError("Analysis failed. Please check your file formats.");
             console.error(err);
         } finally {
             setLoading(false);
+        }
+    };
+
+
+    const handleMultiAnalyze = async (e) => {
+        e.preventDefault();
+        if (!jdFile && !jdText) {
+            setError("Please provide a Job Description.");
+            return;
+        }        
+
+        setError("");
+        setLoading(true);
+        const formData = new FormData();
+        formData.append("user_id", user?.id);
+        if (jdFile) formData.append("jd_file", jdFile);
+        if (jdText) formData.append("jd_text", jdText);
+
+        try {
+            if (aimode){
+                const aiMultiResponse = await API2.post("/aimultianalyse", formData);
+                // setResult(aiResponse.data);
+                console.log(aiMultiResponse.data);
+                setBatchData(aiMultiResponse.data);
+            }
+            else {
+                const multiResponse = await API2.post("/multiplematch", formData);
+                console.log(multiResponse.data);
+                setBatchData(multiResponse.data);
+
+                // setResult(multiResponse.data);
+            }
+        } catch (err) {
+            if (aimode) setError("AI Analysis failed. Try again without AI mode.");
+            else setError("Analysis failed. Please check your file formats.");
+            console.error(err);
+        } finally {
+            setLoading(false);
+            setBatch(true);
+            console.log(batch);
         }
     };
     
@@ -123,7 +219,7 @@ const MockInterview = () => {
             <h2 className="match-title">Mock Interview</h2>
             
             <div className="match-grid">
-                <form className="upload-container" onSubmit={handleAnalyze}>
+                <form className="upload-container" onSubmit={multiple ? handleMultiAnalyze : handleAnalyze}>
                     <div className="upload-card">
                         <div className="card-label"><FileText size={18} /> Resume</div>
                         <label className="file-drop-zone" >
@@ -131,7 +227,7 @@ const MockInterview = () => {
                             <FileUp className={resumeFile ? "active-icon" : ""} />
                             <p>{resumeFile ? resumeFile.name : "Upload Resume (PDF/DOCX)"}</p>
                         </label>
-                                                <div className="separator"><span>OR</span></div>
+                        <div className="separator"><span>OR</span></div>
                         <div className="library-select-wrapper">
                             <Library size={30} />
                             <select onChange={handleSelectFromLibrary} className="resume-dropdown">
@@ -141,6 +237,12 @@ const MockInterview = () => {
                                 ))}
                             </select>
                         </div>
+                        <div className="multiple-select">
+                            <Layers size={25} />
+                            <span className={`slide-switch ${multiple ? 'active' : ''}`} onClick={() => (savedResumes.length > 0) ? setMultiple(!multiple) : setError("Please upload a resume in My Resumes tab first.")}></span>
+                            <p>Select all for multiple matching</p>
+                        </div>
+                        
                     </div>
 
                     <div className="upload-card">
@@ -159,9 +261,15 @@ const MockInterview = () => {
                         />
                     </div>
 
-                    <button type="submit" className="analyze-btn" disabled={loading}>
-                        {loading ? <RefreshCw className="spinning" /> : "Start Analysis"}
-                    </button>
+                    <div className="submit-div">
+                        <button type="submit" className="analyze-btn" disabled={loading}>
+                            {loading ? <RefreshCw className="spinning" /> : "Start Analysis"}
+                        </button>
+                        <p>Switch to AI Mode for Detailed Analysis</p>
+                        <Stars size={40}  className={`stars ${aimode ? 'active' : ''}`}/>
+                        <span className={`slide-switch ${aimode ? 'activeAI' : ''}`} onClick={() => setAiMode(!aimode)}></span>
+
+                    </div>
                     {error && <p className="error-msg"><AlertCircle size={14} /> {error}</p>}
                 </form>
 
@@ -196,6 +304,38 @@ const MockInterview = () => {
                     )}
                 </div>
             </div>
+
+            {batch && 
+            (<div className="batchWindow">
+                <div className="resultWindow">
+                <div className="resultHead"><h3>Batch Analysis Results</h3><span onClick={()=>setBatch(false)}>X</span></div>
+                <ul>
+                    {batchData.results?.map((res) => (
+                        <li key={res.resume_id} className="batch-item">
+                            {/* <div > */}
+                                <div className="main-result">
+                                    <div><FileText size={20}/><p>{res.file_name} : </p>
+                                    </div>
+                                    <p style={{ color: res.match_percentage > 50 ? 'lightgreen' : 'orange' }}>
+                                        {res.match_percentage}%  Match 
+                                        {res.brief_reason &&<button onClick={()=> setExpand(expand == res.resume_id ? null : res.resume_id)}>View Details</button>}
+                                        <button onClick={handleSelectFromLibrary} style={{marginLeft: '20px'}} value={res.resume_id}>Proceed to Interview</button>
+                                    </p>
+                                </div>
+                                    {res.brief_reason && (
+                                        <div className={`sub-result ${expand == res.resume_id ? 'is-open' : ''}`}>
+                                            <div><div><BrainCircuit size={20}/><strong>Reason:</strong></div> <p>{res.brief_reason}</p></div>
+                                            <div><div><Award size={20}/><strong>Top Skills:</strong></div> <p>{res.top_skills.join(", ")}</p></div>
+                                            <div><div><Lightbulb size={20}/><strong>Improvement Suggestions:</strong></div> <p>{res.improvement_suggestions}</p></div>
+                                        </div>
+                                    )}
+                            {/* </div> */}
+                        </li>
+                    ))}
+                </ul>
+                </div>
+            </div>)
+            }
 
             {slotWindows && (
                 <div className="slot-window" onClick={() => setSlotWindows(false)}>
