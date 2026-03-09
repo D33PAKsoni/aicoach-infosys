@@ -56,54 +56,9 @@ cd aicoach-infosys
 
 ### 2. Database Setup
 
-1. Create a database in MySQL WorkBench 8:
+1. Create a database and tables in MySQL WorkBench 8 :
 
-```bash
-CREATE DATABASE aicoach_db;
-
-```
-
-
-2. Create a tables in MySQL WorkBench 8:
-
-```bash
-CREATE TABLE aicoach_db.users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    email VARCHAR(255) UNIQUE NOT NULL,
-	google_id VARCHAR(255) UNIQUE,
-	password_hash VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE aicoach_db.interview_sessions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    session_uuid VARCHAR(255) UNIQUE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_user 
-        FOREIGN KEY (user_id) 
-        REFERENCES users(id) 
-        ON DELETE CASCADE
-);
-
-CREATE TABLE aicoach_db.interview_turns (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    session_id INT NOT NULL,
-    question TEXT NOT NULL,
-    answer TEXT NOT NULL,
-    wpm INT,
-    accuracy FLOAT,
-    fillers VARCHAR(255),
-    dominant_behavior VARCHAR(50),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_session 
-        FOREIGN KEY (session_id) 
-        REFERENCES interview_sessions(id) 
-        ON DELETE CASCADE
-);
-```
-
+Execute content of MySQL.sql file to create the required Schema and Tables.
 
 
 ### 3. Backend Setup
@@ -137,6 +92,7 @@ MYSQL_HOST=localhost
 MYSQL_DB=aicoach_db
 SECRET_KEY=your_super_secret_jwt_key
 GEMINI_API_KEY=your_google_gemini_api_key
+FRONTEND_URL=frontend_root_url
 
 # OPTIONAL (Only for Google Login)
 
@@ -179,7 +135,7 @@ uvicorn main:app
 
 ```
 
-The server will start at `http://localhost:8000`.
+The server will start at `http://localhost:8000` (for default localhost).
 
 ### Start the Frontend
 

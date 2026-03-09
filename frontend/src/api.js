@@ -1,13 +1,10 @@
 import axios from "axios";
 
+export const backendURL= "http://localhost:8000";
+
 const API = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: backendURL,
   withCredentials: true
 });
 
 export default API;
-
-export const API2 = axios.create({
-  baseURL: "https://deepakkumarsoni-aicoach2.hf.space",
-  withCredentials: true
-});

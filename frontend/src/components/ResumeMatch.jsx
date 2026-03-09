@@ -48,7 +48,7 @@ const ResumeMatch = () => {
                 </div>
               </div>
 
-              {/* Action & Result Area */}
+        
               <div className="action-area">
                 {error && <p style={{color: 'red', marginBottom: '10px'}}>{error}</p>}
                 

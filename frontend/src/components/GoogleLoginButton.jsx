@@ -1,7 +1,9 @@
+import { backendURL } from "../api";
+
 export default function GoogleLoginButton() {
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8000/auth/google";
+    window.location.href = `${backendURL}/auth/google`;
   };
 
   return (

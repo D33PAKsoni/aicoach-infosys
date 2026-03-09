@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import API from "../api";
-import { API2 } from '../api';
 
 const MockInterview = () => {
     const [resumeFile, setResumeFile] = useState(null);
@@ -150,7 +149,7 @@ const MockInterview = () => {
 
         try {
             if (aimode){
-                const aiResponse = await API2.post("/aianalyze", formData);
+                const aiResponse = await API.post("/aianalyze", formData);
                 setResult(aiResponse.data);
             }
             // else if (multiple){
@@ -161,7 +160,7 @@ const MockInterview = () => {
             //     // setResult(multiResponse.data);
             // }
             else {
-                const response = await API2.post("/analyze", formData);
+                const response = await API.post("/analyze", formData);
                 setResult(response.data);
             }
         } catch (err) {
@@ -190,13 +189,13 @@ const MockInterview = () => {
 
         try {
             if (aimode){
-                const aiMultiResponse = await API2.post("/aimultianalyse", formData);
+                const aiMultiResponse = await API.post("/aimultianalyse", formData);
                 // setResult(aiResponse.data);
                 console.log(aiMultiResponse.data);
                 setBatchData(aiMultiResponse.data);
             }
             else {
-                const multiResponse = await API2.post("/multiplematch", formData);
+                const multiResponse = await API.post("/multiplematch", formData);
                 console.log(multiResponse.data);
                 setBatchData(multiResponse.data);
 

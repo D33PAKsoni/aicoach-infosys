@@ -15,10 +15,8 @@ import InterviewInstructions from './pages/InterviewInstructions';
 export const App = () => {
   return (
     <div>
-      {/* <Landing /> */}
       <AuthProvider>
         <BrowserRouter>
-        {/* <BrowserRouter basename="/aicoach-infosys"> */}
            <Routes>
             <Route path="/" element={<Landing/>}/>
             <Route path="/login" element={<Login/>}/>

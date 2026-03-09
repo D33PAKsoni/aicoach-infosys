@@ -46,7 +46,7 @@ const Dashboard = () => {
           </div>
           <div className={`menu-div ${selected === "stats" ? "selected" : ""}`} onClick={() => setSelected("stats")}>
             <History size={32} color="black" />
-            <p>Statistics</p>
+            <p>Past Sessions</p>
           </div>
           <div className={`menu-div ${selected === "interview" ? "selected" : ""}`} onClick={() => setSelected("interview")}>
             <ClipboardList size={32} color="black" />
