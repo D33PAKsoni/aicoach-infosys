@@ -2,6 +2,14 @@
 
 AI Interview Coach is a full-stack application designed to help candidates prepare for technical interviews. It uses cosine similarity for resume matching, real-time question generation, speech-to-text transcription, and computer vision to analyze interviewee behavior and emotions.
 
+## Live Demo
+### Frontend
+**Hosted using Vercel**
+https://thedeepaksoni.online/
+### Backend
+**Hosted on Huggingface**
+https://deepakkumarsoni-aicoach.hf.space/
+
 ## Features
 
 * **Resume & JD Analysis**: Calculates a match percentage between a user's resume and a job description using sentence embeddings.
