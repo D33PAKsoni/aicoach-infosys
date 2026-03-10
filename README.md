@@ -10,6 +10,8 @@ https://thedeepaksoni.online/
 **Hosted on Huggingface**
 https://deepakkumarsoni-aicoach.hf.space/
 
+**Note**: Login/Register might not work on Incognito mode as 3rd Party Cookies are often blocked.
+
 ## Features
 
 * **Resume & JD Analysis**: Calculates a match percentage between a user's resume and a job description using sentence embeddings.
