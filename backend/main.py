@@ -25,7 +25,6 @@ async def lifespan(app: FastAPI):
     print("AI Interview Coach: Starting up and loading models...")
     
     db = SessionLocal()
-    # Check if slots exist, if not, create them
     if db.query(InterviewSlot).count() == 0:
         db.add(InterviewSlot(id=1, is_active=False))
         db.add(InterviewSlot(id=2, is_active=False))

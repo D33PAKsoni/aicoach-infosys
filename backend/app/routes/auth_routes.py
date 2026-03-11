@@ -174,3 +174,19 @@ def logout():
     )
 
     return response
+
+@router.post("/contact")
+def receive_contact_message(msg: schemas.MessageCreate, db: Session = Depends(get_db)):
+    try:
+        new_message = models.ContactMessage(
+            name=msg.name,
+            email=msg.email,
+            message=msg.message
+        )
+        db.add(new_message)
+        db.commit()
+        db.refresh(new_message)
+        return {"status": "success", "message": "Message received and stored."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))

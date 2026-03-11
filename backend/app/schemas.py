@@ -37,3 +37,8 @@ class WaitingStatus(BaseModel):
     active_users: int
     estimated_wait_minutes: float
     wait_time_seconds: int
+
+class MessageCreate(BaseModel):
+    name: str
+    email: EmailStr
+    message: str
