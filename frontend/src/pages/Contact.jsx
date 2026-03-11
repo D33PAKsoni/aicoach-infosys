@@ -5,7 +5,7 @@ import { SiGithub } from 'react-icons/si';
 import '../styles/Contact.css';
 import galaxyBg from '../assets/galaxy.jpg'; 
 import logo from '../assets/logo1.png';
-import { API2} from "../api.js";
+import API2 from "../api.js";
 
 export const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
